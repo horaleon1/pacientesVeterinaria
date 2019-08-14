@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import uuid from 'uuid';
 
-export default class NuevaCita extends Component {
-  state = {
-     cita:{
-       mascota:'',
-       propietario:'',
-       fecha:'',
-       hora:'',
-       sintomas:''
+const stateInicial ={
+  cita:{
+    mascota:'',
+    propietario:'',
+    fecha:'',
+    hora:'',
+    sintomas:''
+  },
+  error: false
+  
 
-     }
-  }
+}
+
+export default class NuevaCita extends Component {
+  state = { ...stateInicial }
 
   //usuario escribe en los inputs
   handleChange = (e) => {
@@ -45,6 +49,11 @@ export default class NuevaCita extends Component {
 
    //Agregar la cita al state de App
    this.props.crearNuevaCita(nuevaCita)
+
+   //Colocar en el state el stateInicial
+   this.setState({
+     ...stateInicial
+   })
    
   }
 
