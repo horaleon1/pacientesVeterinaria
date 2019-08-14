@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import uuid from 'uuid';
 
 export default class NuevaCita extends Component {
   state = {
@@ -12,13 +13,39 @@ export default class NuevaCita extends Component {
      }
   }
 
-  handleChange = (e) =>{
+  //usuario escribe en los inputs
+  handleChange = (e) => {
     this.setState({
       cita:{
         ...this.state.cita,
         [e.target.name]: e.target.value
       }
     })
+  }
+  //usuario envia el formulario
+  handleSubmit = (e) => {
+   e.preventDefault();
+
+   //extraer los valores del state
+   const { mascota, propietario, fecha, hora, sintomas } = this.state.cita;
+
+   //validar que todos los campos esten llenos
+
+   if(mascota === '' || propietario === '' || fecha === '' || hora === '' || sintomas === ''){
+     this.setState({
+       error:true
+     })
+     //detener la ejecucion
+     return
+   }
+
+   //generar objeto con los datos
+   const nuevaCita = {...this.state.cita};
+   nuevaCita.id = uuid();
+
+   //Agregar la cita al state de App
+   this.props.crearNuevaCita(nuevaCita)
+   
   }
 
   render() {
@@ -29,7 +56,7 @@ export default class NuevaCita extends Component {
             Llena el formulario para crear una nueva cita
           </h2>
 
-          <form>
+          <form  onSubmit={this.handleSubmit}>
             <div className="form-group row">
               <label className="col-sm-4 col-lg-2 col-form-label">
                 Nombre Mascota
